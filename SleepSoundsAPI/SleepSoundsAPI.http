@@ -1,0 +1,6 @@
+@SleepSoundsAPI_HostAddress = http://localhost:5028
+
+GET {{SleepSoundsAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
