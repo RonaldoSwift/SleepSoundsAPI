@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SleepSoundsAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a56026f5bbeaee4b71c4fe69e3d4f74102f2c4ab")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+34a2df6049167c3857d79df1f7040d05834e0110")]
 [assembly: System.Reflection.AssemblyProductAttribute("SleepSoundsAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SleepSoundsAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
