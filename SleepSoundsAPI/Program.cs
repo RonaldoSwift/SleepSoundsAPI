@@ -1,9 +1,18 @@
+using SleepSoundsAPI.Data.Modelo;
+using SleepSoundsAPI.Data.UnitOfWork;
+using SleepSoundsAPI.DBConnection;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.Configure<StringConnection>(builder.Configuration.GetSection("ConnectionStrings"));
+builder.Services.AddScoped<UnitOfWorkDiscover>();
+
+string localIP = "192.168.1.58";
+builder.WebHost.UseUrls($"http://{localIP}:7023",$"http://{localIP}:5023");
 
 var app = builder.Build();
 
@@ -11,7 +20,6 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-
     app.UseSwaggerUI();
 }
 
@@ -36,6 +44,14 @@ app.MapGet("/weatherforecast", () =>
     return forecast;
 })
 .WithName("GetWeatherForecast")
+.WithOpenApi();
+
+app.MapGet("/obtenerListaDeMusicaDiscover", async (UnitOfWorkDiscover unitOfWorkDiscover) =>
+{
+    MusicaDiscoverResponse musicaDiscoverResponse  = await unitOfWorkDiscover.obtenerListaDeMusicaDiscover();
+    return musicaDiscoverResponse;
+})
+.WithName("GetObtenerListaDeMusica")
 .WithOpenApi();
 
 app.Run();
