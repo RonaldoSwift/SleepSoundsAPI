@@ -48,10 +48,26 @@ app.MapGet("/weatherforecast", () =>
 
 app.MapGet("/obtenerListaDeMusicaDiscover", async (UnitOfWorkDiscover unitOfWorkDiscover) =>
 {
+        Thread.Sleep(2000);
     MusicaDiscoverResponse musicaDiscoverResponse  = await unitOfWorkDiscover.obtenerListaDeMusicaDiscover();
     return musicaDiscoverResponse;
 })
 .WithName("GetObtenerListaDeMusica")
+.WithOpenApi();
+
+app.MapGet("/obtenerDetalleDeMusicaPorID", async (UnitOfWorkDiscover unitOfWorkDiscover, int idDeMusica) =>
+{
+    Thread.Sleep(2000);
+    DetalleMusicaDiscoverResponse detalleMusicaDiscoverResponse = await unitOfWorkDiscover.obtenerDetalleDeMusicaPorID(idDeMusica);
+
+    if (detalleMusicaDiscoverResponse == null)
+    {
+        return Results.NotFound("Detalle De Musica no encontrada.");
+    }
+
+    return Results.Ok(detalleMusicaDiscoverResponse);
+})
+.WithName("GetObtenerDetalleDeMusicaPorID")
 .WithOpenApi();
 
 app.Run();
