@@ -31,43 +31,28 @@ var summaries = new[]
     
 };
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
-
-app.MapGet("/obtenerListaDeMusicaDiscover", async (UnitOfWorkDiscover unitOfWorkDiscover) =>
+app.MapGet("/obtenerListaDePaquetes", async (UnitOfWorkDiscover unitOfWorkDiscover) =>
 {
         Thread.Sleep(2000);
-    MusicaDiscoverResponse musicaDiscoverResponse  = await unitOfWorkDiscover.obtenerListaDeMusicaDiscover();
-    return musicaDiscoverResponse;
+    PaqueteResponse paqueteResponse  = await unitOfWorkDiscover.obtenerListaDePaquetes();
+    return paqueteResponse;
 })
-.WithName("GetObtenerListaDeMusica")
+.WithName("GetObtenerListaDePaquete")
 .WithOpenApi();
 
-app.MapGet("/obtenerDetalleDeMusicaPorID", async (UnitOfWorkDiscover unitOfWorkDiscover, int idDeMusica) =>
+app.MapGet("/obtenerDetalleDePaquetePorID", async (UnitOfWorkDiscover unitOfWorkDiscover, int idDeMusica) =>
 {
     Thread.Sleep(2000);
-    DetalleMusicaDiscoverResponse detalleMusicaDiscoverResponse = await unitOfWorkDiscover.obtenerDetalleDeMusicaPorID(idDeMusica);
+    DetallePaqueteResponse detallePaqueteResponse = await unitOfWorkDiscover.obtenerDetalleDePaquetePorID(idDeMusica);
 
-    if (detalleMusicaDiscoverResponse == null)
+    if (detallePaqueteResponse == null)
     {
-        return Results.NotFound("Detalle De Musica no encontrada.");
+        return Results.NotFound("Detalle De Paquete no encontrada.");
     }
 
-    return Results.Ok(detalleMusicaDiscoverResponse);
+    return Results.Ok(detallePaqueteResponse);
 })
-.WithName("GetObtenerDetalleDeMusicaPorID")
+.WithName("GetObtenerDetalleDePaquetePorID")
 .WithOpenApi();
 
 app.Run();
