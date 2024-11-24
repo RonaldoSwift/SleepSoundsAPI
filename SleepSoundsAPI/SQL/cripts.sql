@@ -31,6 +31,14 @@ CREATE TABLE Musica (
     Categoria VARCHAR(50) NOT NULL
 );
 
+CREATE TABLE Destacado (
+    Id INT PRIMARY KEY IDENTITY(1,1), 
+    Imagen VARCHAR(MAX) NOT NULL,
+    Nombre VARCHAR(255) NOT NULL,             
+    CantidadDeMusica INT,
+    NombreDeCategoria VARCHAR(255) NOT NULL
+);
+
 -- Creacion de Store Procedure
 CREATE PROCEDURE USP_OBTENER_LISTA_DE_PAQUETES
 AS
@@ -57,20 +65,37 @@ BEGIN
     FROM Musica
 END
 
+CREATE PROCEDURE USP_OBTENER_LISTA_DE_DESTACADO
+AS
+BEGIN
+    SELECT *
+    FROM Destacado
+END
+
 --Ejecutar Store Procedure
 EXEC USP_OBTENER_LISTA_DE_PAQUETES;
 EXEC USP_OBTENER_DETALLE_DE_PAQUETE_POR_ID 1;
 EXEC USP_OBTENER_MUSICA;
+EXEC USP_OBTENER_LISTA_DE_DESTACADO;
 
 -- Eliminar Store Procedure
 DROP PROCEDURE USP_OBTENER_LISTA_DE_PAQUETES;
 DROP PROCEDURE USP_OBTENER_DETALLE_DE_PAQUETE_POR_ID;
 DROP PROCEDURE USP_OBTENER_MUSICA;
+DROP PROCEDURE USP_OBTENER_LISTA_DE_DESTACADO;
+
+-- Eliminar Tabla
+DROP TABLE Paquete
+DROP TABLE Detalle 
+DROP TABLE Musica
+DROP TABLE Destacado
 
 -- Ejecutar para eliminar tabla
 DROP PROCEDURE USP_OBTENER_LISTA_DE_MUSICA_DISCOVER
 DROP TABLE Detalle
 DROP TABLE Musica
+DROP TABLE Destacado
+
 --Llenado de tablas
 
 INSERT INTO Paquete (Imagen, Nombre, CantidadDeMusica, TiempoDeDuracion, NombreDeCategoria) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FGuitarCamp.png?alt=media&token=b2f13124-2ac7-402a-8fdb-6666347909f0','Guitar Camp',7,0,'Instrumental');
@@ -83,3 +108,6 @@ INSERT INTO Paquete (Imagen, Nombre, CantidadDeMusica, TiempoDeDuracion, NombreD
 INSERT INTO Detalle (Nombre, CantidadDeMusica, TiempoDeDuracion, NombreDeCategoria, TituloDeDetalle, Detalle) VALUES ('Guitar Camp',7,0,'Instrumental','About this pack','An acoustic mix has been specially selected for you. The camping atmosphere will help you improve your sleep and your body as a whole. Your dreams will be delightful and vivid.');
 
 INSERT INTO Musica (Artista, Titulo, Album, Categoria) VALUES ('The Guitars ','Lost Without You','City Lights','Romantic');
+
+INSERT INTO Destacado (Imagen, Nombre, CantidadDeMusica, NombreDeCategoria) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FChillhop.png?alt=media&token=47264e92-f332-4c61-91a8-a8e0648f2319','Chill-hop',7,'Instrumental');
+INSERT INTO Destacado (Imagen, Nombre, CantidadDeMusica, NombreDeCategoria) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FLullaby.png?alt=media&token=f6698612-9358-416d-b9e4-2a736b229394','Lullaby',7,'Instrumental');
