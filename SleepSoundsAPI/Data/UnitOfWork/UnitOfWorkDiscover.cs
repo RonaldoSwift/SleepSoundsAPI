@@ -94,4 +94,38 @@ public class UnitOfWorkDiscover
         }
         return new DetallePaqueteResponse{DetalleDePaquete = detallePaqueteEntity};
     }
+
+    public async Task<MusicaResponse> obtenerMusica() 
+    {
+        MusicaEntity musicaEntity = null;
+
+        try 
+        {
+            SqlConnection sqlConnection = new SqlConnection();
+            sqlConnection.ConnectionString = stringConnection.Cadena;
+            sqlConnection.Open();
+
+            SqlCommand sqlCommand = new SqlCommand("USP_OBTENER_MUSICA", sqlConnection);
+            sqlCommand.CommandType = CommandType.StoredProcedure;
+
+            SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+
+            while (sqlDataReader.Read())
+            {
+                musicaEntity = new MusicaEntity
+                {
+                    Id = Convert.ToInt32(sqlDataReader["Id"]),
+                    Artista = Convert.ToString(sqlDataReader["Artista"]),
+                    Titulo = Convert.ToString(sqlDataReader["Titulo"]),
+                    Album = Convert.ToString(sqlDataReader["Album"]),
+                    Categoria = Convert.ToString(sqlDataReader["Categoria"])
+                };
+            }
+        }
+        catch (Exception exception)
+        {
+            throw new Exception("Error al obtener Musica ", exception);
+        }
+        return new MusicaResponse{Musica = musicaEntity};
+    }
 }

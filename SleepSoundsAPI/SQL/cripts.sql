@@ -23,6 +23,14 @@ CREATE TABLE Detalle (
     Detalle VARCHAR(MAX) NOT NULL
 );
 
+CREATE TABLE Musica (
+    Id INT PRIMARY KEY IDENTITY(1,1),
+    Artista VARCHAR(100) NOT NULL,
+    Titulo VARCHAR(200) NOT NULL,
+    Album VARCHAR(150) NOT NULL,
+    Categoria VARCHAR(50) NOT NULL
+);
+
 -- Creacion de Store Procedure
 CREATE PROCEDURE USP_OBTENER_LISTA_DE_PAQUETES
 AS
@@ -42,14 +50,27 @@ BEGIN
     WHERE IdDetalle = @Id
 END
 
+CREATE PROCEDURE USP_OBTENER_MUSICA
+AS
+BEGIN
+    SELECT *
+    FROM Musica
+END
+
 --Ejecutar Store Procedure
 EXEC USP_OBTENER_LISTA_DE_PAQUETES;
-EXEC USP_OBTENER_DETALLE_DE_PAQUETE_POR_ID 1
+EXEC USP_OBTENER_DETALLE_DE_PAQUETE_POR_ID 1;
+EXEC USP_OBTENER_MUSICA;
+
+-- Eliminar Store Procedure
+DROP PROCEDURE USP_OBTENER_LISTA_DE_PAQUETES;
+DROP PROCEDURE USP_OBTENER_DETALLE_DE_PAQUETE_POR_ID;
+DROP PROCEDURE USP_OBTENER_MUSICA;
 
 -- Ejecutar para eliminar tabla
 DROP PROCEDURE USP_OBTENER_LISTA_DE_MUSICA_DISCOVER
 DROP TABLE Detalle
-
+DROP TABLE Musica
 --Llenado de tablas
 
 INSERT INTO Paquete (Imagen, Nombre, CantidadDeMusica, TiempoDeDuracion, NombreDeCategoria) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FGuitarCamp.png?alt=media&token=b2f13124-2ac7-402a-8fdb-6666347909f0','Guitar Camp',7,0,'Instrumental');
@@ -60,3 +81,5 @@ INSERT INTO Paquete (Imagen, Nombre, CantidadDeMusica, TiempoDeDuracion, NombreD
 INSERT INTO Paquete (Imagen, Nombre, CantidadDeMusica, TiempoDeDuracion, NombreDeCategoria) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FLullaby.png?alt=media&token=41081b2a-4cfe-4472-908d-0ed5f7a1b25f','Lullaby',7,0,'Instrumental');
 
 INSERT INTO Detalle (Nombre, CantidadDeMusica, TiempoDeDuracion, NombreDeCategoria, TituloDeDetalle, Detalle) VALUES ('Guitar Camp',7,0,'Instrumental','About this pack','An acoustic mix has been specially selected for you. The camping atmosphere will help you improve your sleep and your body as a whole. Your dreams will be delightful and vivid.');
+
+INSERT INTO Musica (Artista, Titulo, Album, Categoria) VALUES ('The Guitars ','Lost Without You','City Lights','Romantic');

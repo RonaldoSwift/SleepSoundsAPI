@@ -55,6 +55,20 @@ app.MapGet("/obtenerDetalleDePaquetePorID", async (UnitOfWorkDiscover unitOfWork
 .WithName("GetObtenerDetalleDePaquetePorID")
 .WithOpenApi();
 
+app.MapGet("/obtenerMusica", async (UnitOfWorkDiscover unitOfWorkDiscover) =>
+{
+    Thread.Sleep(2000);
+    MusicaResponse musicaResponse = await unitOfWorkDiscover.obtenerMusica();
+    if (musicaResponse == null)
+    {
+        return Results.NotFound("Detalle De Musica no encontrada.");
+    }
+
+    return Results.Ok(musicaResponse);
+})
+.WithName("GetObtenerMusica")
+.WithOpenApi();
+
 app.Run();
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
