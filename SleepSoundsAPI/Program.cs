@@ -69,6 +69,15 @@ app.MapGet("/obtenerMusica", async (UnitOfWorkDiscover unitOfWorkDiscover) =>
 .WithName("GetObtenerMusica")
 .WithOpenApi();
 
+app.MapGet("/obtenerListaDeDestacado", async (UnitOfWorkDiscover unitOfWorkDiscover) =>
+{
+    Thread.Sleep(2000);
+    DestacadoResponse destacadoResponse  = await unitOfWorkDiscover.obtenerDestacado();
+    return destacadoResponse;
+})
+.WithName("GetObtenerListaDeDestacado")
+.WithOpenApi();
+
 app.Run();
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)

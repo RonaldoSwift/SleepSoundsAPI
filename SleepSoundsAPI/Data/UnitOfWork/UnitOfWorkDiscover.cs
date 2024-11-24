@@ -128,4 +128,45 @@ public class UnitOfWorkDiscover
         }
         return new MusicaResponse{Musica = musicaEntity};
     }
+
+    public async Task<DestacadoResponse> obtenerDestacado()
+    {
+        List<DestacadoEntity> listaDeDestacados = new List<DestacadoEntity>();
+
+        try {
+            SqlConnection sqlConnection = new SqlConnection();
+            sqlConnection.ConnectionString = stringConnection.Cadena;
+            sqlConnection.Open();
+
+            SqlCommand sqlCommand = new SqlCommand("USP_OBTENER_LISTA_DE_DESTACADO", sqlConnection);
+            sqlCommand.CommandType = CommandType.StoredProcedure;
+
+            SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+
+            while (sqlDataReader.Read())
+            {
+                DestacadoEntity destacadoEntity = new DestacadoEntity
+                {
+                    Id = Convert.ToInt32(sqlDataReader["Id"]),
+                    Imagen = Convert.ToString(sqlDataReader["Imagen"]),
+                    Nombre = Convert.ToString(sqlDataReader["Nombre"]),
+                    CantidadDeMusica = Convert.ToInt32(sqlDataReader["CantidadDeMusica"]),
+                    NombreDeCategoria = Convert.ToString(sqlDataReader["NombreDeCategoria"])
+                };
+                listaDeDestacados.Add(destacadoEntity);
+            }
+            sqlDataReader.Close();
+            sqlConnection.Close();
+        }
+        catch (Exception exception)
+        {
+            throw new Exception("Error al obtener Destacado ", exception);
+        }
+
+        DestacadoResponse destacadoResponse = new DestacadoResponse
+        {
+            listaDeDestacadosEntity = listaDeDestacados
+        };
+        return destacadoResponse;
+    }
 }
