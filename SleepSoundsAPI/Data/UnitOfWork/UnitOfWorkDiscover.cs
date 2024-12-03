@@ -39,7 +39,7 @@ public class UnitOfWorkDiscover
                     Nombre = Convert.ToString(sqlDataReader["Nombre"]),
                     CantidadDeMusica = Convert.ToInt32(sqlDataReader["CantidadDeMusica"]),
                     TiempoDeDuracion = Convert.ToInt32(sqlDataReader["TiempoDeDuracion"]),
-                    NombreDeCategoria = Convert.ToString(sqlDataReader["NombreDeCategoria"])
+                    NombreCategoria = Convert.ToString(sqlDataReader["NombreCategoria"])
                 };
                 listaDePaquetes.Add(paqueteEntity);
             }
@@ -95,38 +95,49 @@ public class UnitOfWorkDiscover
         return new DetallePaqueteResponse{DetalleDePaquete = detallePaqueteEntity};
     }
 
-    public async Task<MusicaResponse> obtenerMusica() 
+    public async Task<MusicaResponse> obtenerMusicas(int idDeMusica) 
     {
-        MusicaEntity musicaEntity = null;
-
+        List<MusicaEntity> listaDeMusicas = new List<MusicaEntity>();
         try 
         {
             SqlConnection sqlConnection = new SqlConnection();
             sqlConnection.ConnectionString = stringConnection.Cadena;
             sqlConnection.Open();
 
-            SqlCommand sqlCommand = new SqlCommand("USP_OBTENER_MUSICA", sqlConnection);
+            SqlCommand sqlCommand = new SqlCommand("USP_OBTENER_MUSICA_POR_ID", sqlConnection);
             sqlCommand.CommandType = CommandType.StoredProcedure;
+            sqlCommand.Parameters.AddWithValue("@IdPaquete", idDeMusica);
 
             SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
 
             while (sqlDataReader.Read())
             {
-                musicaEntity = new MusicaEntity
+                MusicaEntity musicaEntity = new MusicaEntity
                 {
                     Id = Convert.ToInt32(sqlDataReader["Id"]),
                     Artista = Convert.ToString(sqlDataReader["Artista"]),
                     Titulo = Convert.ToString(sqlDataReader["Titulo"]),
                     Album = Convert.ToString(sqlDataReader["Album"]),
-                    Categoria = Convert.ToString(sqlDataReader["Categoria"])
+                    IdDePaquete = Convert.ToInt32(sqlDataReader["IdDePaquete"]),
+                    UrlDeMusica = Convert.ToString(sqlDataReader["UrlDeMusica"]),
                 };
+                listaDeMusicas.Add(musicaEntity);
             }
+            sqlDataReader.Close();
+            sqlConnection.Close();
         }
         catch (Exception exception)
         {
             throw new Exception("Error al obtener Musica ", exception);
         }
-        return new MusicaResponse{Musica = musicaEntity};
+        
+        MusicaResponse musicaResponse = new MusicaResponse
+        {
+            listaDeMusicasEntity = listaDeMusicas
+        };
+
+        return musicaResponse;
+
     }
 
     public async Task<DestacadoResponse> obtenerDestacado()
