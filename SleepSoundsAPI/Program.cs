@@ -55,10 +55,10 @@ app.MapGet("/obtenerDetalleDePaquetePorID", async (UnitOfWorkDiscover unitOfWork
 .WithName("GetObtenerDetalleDePaquetePorID")
 .WithOpenApi();
 
-app.MapGet("/obtenerMusica", async (UnitOfWorkDiscover unitOfWorkDiscover) =>
+app.MapGet("/obtenerMusicasPorId", async (UnitOfWorkDiscover unitOfWorkDiscover, int idDeMusica) =>
 {
     Thread.Sleep(2000);
-    MusicaResponse musicaResponse = await unitOfWorkDiscover.obtenerMusica();
+    MusicaResponse musicaResponse = await unitOfWorkDiscover.obtenerMusicas(idDeMusica);
     if (musicaResponse == null)
     {
         return Results.NotFound("Detalle De Musica no encontrada.");
@@ -66,7 +66,7 @@ app.MapGet("/obtenerMusica", async (UnitOfWorkDiscover unitOfWorkDiscover) =>
 
     return Results.Ok(musicaResponse);
 })
-.WithName("GetObtenerMusica")
+.WithName("GetObtenerMusicasPorID")
 .WithOpenApi();
 
 app.MapGet("/obtenerListaDeDestacado", async (UnitOfWorkDiscover unitOfWorkDiscover) =>

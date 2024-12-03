@@ -2,5 +2,5 @@ namespace SleepSoundsAPI.Data.Modelo;
 
 public class MusicaResponse
 {
-    public MusicaEntity? Musica { get; set; }
+    public List<MusicaEntity?> listaDeMusicasEntity { get; set; }
 }

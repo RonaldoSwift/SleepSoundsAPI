@@ -6,5 +6,6 @@ public class MusicaEntity
     public string? Artista { get; set; }
     public string? Titulo { get; set; }
     public string? Album { get; set; }
-    public string? Categoria { get; set; }
+    public int IdDePaquete { get; set; }
+    public string? UrlDeMusica { get; set; }
 }
