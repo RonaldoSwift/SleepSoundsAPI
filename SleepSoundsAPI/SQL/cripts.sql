@@ -52,6 +52,12 @@ CREATE TABLE Child (
     Nombre VARCHAR(50) NOT NULL,
 );
 
+CREATE TABLE Nature (
+    Id INT PRIMARY KEY IDENTITY(1,1),
+    Imagen VARCHAR(MAX) NOT NULL,
+    Nombre VARCHAR(50) NOT NULL,
+);
+
 -- Creacion de Store Procedure
 CREATE PROCEDURE USP_OBTENER_LISTA_DE_PAQUETES
 AS
@@ -132,12 +138,20 @@ BEGIN
     FROM Child
 END;
 
+CREATE PROCEDURE USP_OBTENER_LISTA_NATURE
+AS
+BEGIN
+    SELECT *
+    FROM Nature
+END;
+
 --Ejecutar Store Procedure
 EXEC USP_OBTENER_LISTA_DE_PAQUETES;
 EXEC USP_OBTENER_DETALLE_DE_PAQUETE_POR_ID 1;
 EXEC USP_OBTENER_MUSICA_POR_ID 1;
 EXEC USP_OBTENER_LISTA_DE_DESTACADO;
 EXEC USP_OBTENER_LISTA_CHILD;
+EXEC USP_OBTENER_LISTA_NATURE;
 
 -- Eliminar Store Procedure
 DROP PROCEDURE USP_OBTENER_LISTA_DE_PAQUETES;
@@ -180,3 +194,8 @@ INSERT INTO Destacado (Imagen, Nombre, CantidadDeMusica, IdCategoria) VALUES ('h
 INSERT INTO Child (Imagen, Nombre) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FChild.svg?alt=media&token=f0d8a303-51b0-4f6e-a5ba-3e3e061d1e10','Female voice');
 INSERT INTO Child (Imagen, Nombre) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FNoize.svg?alt=media&token=e20d43fa-1d6c-4161-a661-7cfde6ddd987','White noize');
 INSERT INTO Child (Imagen, Nombre) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FLullaby.svg?alt=media&token=441d0b96-aa2b-4e20-91cc-f150a1f488e2','Lullaby');
+
+INSERT INTO Nature (Imagen, Nombre) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FLluiva.png?alt=media&token=6b28f281-306e-446c-b514-e01d9d5243c4','Rain');
+INSERT INTO Nature (Imagen, Nombre) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FForest.png?alt=media&token=cb1dcb95-7304-4808-9d92-36aecaa0a2e1','Forest');
+INSERT INTO Nature (Imagen, Nombre) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FOcean.png?alt=media&token=dd94d9d2-23c4-4a69-95ef-d1c9081a6273','Ocean');
+INSERT INTO Nature (Imagen, Nombre) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FFire.png?alt=media&token=a5b50e7e-bf48-4ece-9527-1ec2cbf5c1d7','Fire');

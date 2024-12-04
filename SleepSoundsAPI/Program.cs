@@ -87,7 +87,14 @@ app.MapGet("/obtenerListaDeChild", async (UnitOfWorkDiscover unitOfWorkDiscover)
 .WithName("GetObtenerListaDeChild")
 .WithOpenApi();
 
-
+app.MapGet("/obtenerListaDeNature", async (UnitOfWorkDiscover unitOfWorkDiscover) =>
+{
+    Thread.Sleep(2000);
+    NatureResponse natureResponse  = await unitOfWorkDiscover.obtenerListaNature();
+    return natureResponse;
+})
+.WithName("GetObtenerListaDeNature")
+.WithOpenApi();
 
 app.Run();
 
