@@ -218,4 +218,42 @@ public class UnitOfWorkDiscover
         };
         return childResponse;
     }
+
+    public async Task<NatureResponse> obtenerListaNature()
+    {
+        List<NatureEntity> listaDeNatures = new List<NatureEntity>();
+
+        try{
+            SqlConnection sqlConnection = new SqlConnection();
+            sqlConnection.ConnectionString = stringConnection.Cadena;
+            sqlConnection.Open();
+
+            SqlCommand sqlCommand = new SqlCommand("USP_OBTENER_LISTA_NATURE", sqlConnection);
+            sqlCommand.CommandType = CommandType.StoredProcedure;
+
+            SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+
+            while (sqlDataReader.Read())
+            {
+                NatureEntity natureEntity = new NatureEntity
+                {
+                    Id = Convert.ToInt32(sqlDataReader["Id"]),
+                    Imagen = Convert.ToString(sqlDataReader["Imagen"]),
+                    Nombre = Convert.ToString(sqlDataReader["Nombre"])
+                };
+                listaDeNatures.Add(natureEntity);
+            }
+            sqlDataReader.Close();
+            sqlConnection.Close();
+        }
+        catch (Exception exception)
+        {
+            throw new Exception("Error al obtener Nature ", exception);
+        }
+        NatureResponse natureResponse = new NatureResponse
+        {
+            listaDeNatureEntity = listaDeNatures
+        };
+        return natureResponse;
+    }
 }
