@@ -78,6 +78,17 @@ app.MapGet("/obtenerListaDeDestacado", async (UnitOfWorkDiscover unitOfWorkDisco
 .WithName("GetObtenerListaDeDestacado")
 .WithOpenApi();
 
+app.MapGet("/obtenerListaDeChild", async (UnitOfWorkDiscover unitOfWorkDiscover) =>
+{
+    Thread.Sleep(2000);
+    ChildResponse childResponse  = await unitOfWorkDiscover.obtenerListaChilds();
+    return childResponse;
+})
+.WithName("GetObtenerListaDeChild")
+.WithOpenApi();
+
+
+
 app.Run();
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)

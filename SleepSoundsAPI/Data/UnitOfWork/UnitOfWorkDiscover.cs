@@ -180,4 +180,42 @@ public class UnitOfWorkDiscover
         };
         return destacadoResponse;
     }
+
+    public async Task<ChildResponse> obtenerListaChilds()
+    {
+        List<ChildEntity> listaDeChilds = new List<ChildEntity>();
+
+        try{
+            SqlConnection sqlConnection = new SqlConnection();
+            sqlConnection.ConnectionString = stringConnection.Cadena;
+            sqlConnection.Open();
+
+            SqlCommand sqlCommand = new SqlCommand("USP_OBTENER_LISTA_CHILD", sqlConnection);
+            sqlCommand.CommandType = CommandType.StoredProcedure;
+
+            SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+
+            while (sqlDataReader.Read())
+            {
+                ChildEntity childEntity = new ChildEntity
+                {
+                    Id = Convert.ToInt32(sqlDataReader["Id"]),
+                    Imagen = Convert.ToString(sqlDataReader["Imagen"]),
+                    Nombre = Convert.ToString(sqlDataReader["Nombre"])
+                };
+                listaDeChilds.Add(childEntity);
+            }
+            sqlDataReader.Close();
+            sqlConnection.Close();
+        }
+        catch (Exception exception)
+        {
+            throw new Exception("Error al obtener Hijos ", exception);
+        }
+        ChildResponse childResponse = new ChildResponse
+        {
+            listaDeChildEntity = listaDeChilds
+        };
+        return childResponse;
+    }
 }
