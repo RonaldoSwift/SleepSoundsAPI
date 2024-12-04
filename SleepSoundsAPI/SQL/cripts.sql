@@ -58,6 +58,12 @@ CREATE TABLE Nature (
     Nombre VARCHAR(50) NOT NULL,
 );
 
+CREATE TABLE Animal (
+    Id INT PRIMARY KEY IDENTITY(1,1),
+    Imagen VARCHAR(MAX) NOT NULL,
+    Nombre VARCHAR(50) NOT NULL,
+);
+
 -- Creacion de Store Procedure
 CREATE PROCEDURE USP_OBTENER_LISTA_DE_PAQUETES
 AS
@@ -145,6 +151,13 @@ BEGIN
     FROM Nature
 END;
 
+CREATE PROCEDURE USP_OBTENER_LISTA_ANIMAL
+AS
+BEGIN
+    SELECT *
+    FROM Animal
+END;
+
 --Ejecutar Store Procedure
 EXEC USP_OBTENER_LISTA_DE_PAQUETES;
 EXEC USP_OBTENER_DETALLE_DE_PAQUETE_POR_ID 1;
@@ -152,6 +165,7 @@ EXEC USP_OBTENER_MUSICA_POR_ID 1;
 EXEC USP_OBTENER_LISTA_DE_DESTACADO;
 EXEC USP_OBTENER_LISTA_CHILD;
 EXEC USP_OBTENER_LISTA_NATURE;
+EXEC USP_OBTENER_LISTA_ANIMAL;
 
 -- Eliminar Store Procedure
 DROP PROCEDURE USP_OBTENER_LISTA_DE_PAQUETES;
@@ -199,3 +213,7 @@ INSERT INTO Nature (Imagen, Nombre) VALUES ('https://firebasestorage.googleapis.
 INSERT INTO Nature (Imagen, Nombre) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FForest.png?alt=media&token=cb1dcb95-7304-4808-9d92-36aecaa0a2e1','Forest');
 INSERT INTO Nature (Imagen, Nombre) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FOcean.png?alt=media&token=dd94d9d2-23c4-4a69-95ef-d1c9081a6273','Ocean');
 INSERT INTO Nature (Imagen, Nombre) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FFire.png?alt=media&token=a5b50e7e-bf48-4ece-9527-1ec2cbf5c1d7','Fire');
+
+INSERT INTO Animal (Imagen, Nombre) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FBird.png?alt=media&token=bf04dce7-e3c6-46e5-85e1-aaf0f399bac9','Birds');
+INSERT INTO Animal (Imagen, Nombre) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FCat.png?alt=media&token=60560a48-47f1-435e-a0e1-b8221e3c2017','Cats');
+INSERT INTO Animal (Imagen, Nombre) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FFrogs.png?alt=media&token=8ba62bb6-d7ff-45c6-8c78-14a94dc67b49','Frogs');
