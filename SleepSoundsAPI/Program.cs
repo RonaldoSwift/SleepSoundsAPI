@@ -96,6 +96,15 @@ app.MapGet("/obtenerListaDeNature", async (UnitOfWorkDiscover unitOfWorkDiscover
 .WithName("GetObtenerListaDeNature")
 .WithOpenApi();
 
+app.MapGet("/obtenerListaDeAnimal", async (UnitOfWorkDiscover unitOfWorkDiscover) =>
+{
+    Thread.Sleep(2000);
+    AnimalResponse animalResponse  = await unitOfWorkDiscover.obtenerListaAnimal();
+    return animalResponse;
+})
+.WithName("GetObtenerListaDeAnimal")
+.WithOpenApi();
+
 app.Run();
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)

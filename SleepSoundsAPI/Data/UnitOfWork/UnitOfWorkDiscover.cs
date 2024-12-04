@@ -256,4 +256,43 @@ public class UnitOfWorkDiscover
         };
         return natureResponse;
     }
+
+    public async Task<AnimalResponse> obtenerListaAnimal()
+    {
+        List<AnimalEntity> listaDeAnimals = new List<AnimalEntity>();
+
+        try{
+            SqlConnection sqlConnection = new SqlConnection();
+            sqlConnection.ConnectionString = stringConnection.Cadena;
+            sqlConnection.Open();
+
+            SqlCommand sqlCommand = new SqlCommand("USP_OBTENER_LISTA_ANIMAL", sqlConnection);
+            sqlCommand.CommandType = CommandType.StoredProcedure;
+
+            SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+
+            while (sqlDataReader.Read())
+            {
+                AnimalEntity animalEntity = new AnimalEntity
+                {
+                    Id = Convert.ToInt32(sqlDataReader["Id"]),
+                    Imagen = Convert.ToString(sqlDataReader["Imagen"]),
+                    Nombre = Convert.ToString(sqlDataReader["Nombre"])
+                };
+                listaDeAnimals.Add(animalEntity);
+            }
+            sqlDataReader.Close();
+            sqlConnection.Close();
+        }
+        catch (Exception exception)
+        {
+            throw new Exception("Error al obtener Animal ", exception);
+        }
+
+        AnimalResponse animalResponse = new AnimalResponse
+        {
+            listaDeAnimalEntity = listaDeAnimals
+        };
+        return animalResponse;
+    }
 }
