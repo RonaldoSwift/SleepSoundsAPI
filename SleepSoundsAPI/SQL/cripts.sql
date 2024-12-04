@@ -46,6 +46,12 @@ CREATE TABLE Destacado (
     IdCategoria INT
 );
 
+CREATE TABLE Child (
+    Id INT PRIMARY KEY IDENTITY(1,1),
+    Imagen VARCHAR(MAX) NOT NULL,
+    Nombre VARCHAR(50) NOT NULL,
+);
+
 -- Creacion de Store Procedure
 CREATE PROCEDURE USP_OBTENER_LISTA_DE_PAQUETES
 AS
@@ -119,11 +125,19 @@ BEGIN
     ON Destacado.IdCategoria = Categoria.Id
 END
 
+CREATE PROCEDURE USP_OBTENER_LISTA_CHILD
+AS
+BEGIN
+    SELECT *
+    FROM Child
+END;
+
 --Ejecutar Store Procedure
 EXEC USP_OBTENER_LISTA_DE_PAQUETES;
 EXEC USP_OBTENER_DETALLE_DE_PAQUETE_POR_ID 1;
 EXEC USP_OBTENER_MUSICA_POR_ID 1;
 EXEC USP_OBTENER_LISTA_DE_DESTACADO;
+EXEC USP_OBTENER_LISTA_CHILD;
 
 -- Eliminar Store Procedure
 DROP PROCEDURE USP_OBTENER_LISTA_DE_PAQUETES;
@@ -141,24 +155,28 @@ DROP TABLE Destacado
 
 --Llenado de tablas
 
-    INSERT INTO Paquete (Imagen, Nombre, CantidadDeMusica, TiempoDeDuracion, idCategoria) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FGuitarCamp.png?alt=media&token=b2f13124-2ac7-402a-8fdb-6666347909f0','Guitar Camp',7, 0, 1);
-    INSERT INTO Paquete (Imagen, Nombre, CantidadDeMusica, TiempoDeDuracion, idCategoria) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FChillHop.png?alt=media&token=344d4cf1-4a4f-45a8-88c1-9b0939656501','Chill-hop',7, 0, 1);
-    INSERT INTO Paquete (Imagen, Nombre, CantidadDeMusica, TiempoDeDuracion, idCategoria) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FPackName.png?alt=media&token=e7eb16f4-cac1-48cd-9091-76dec6df79d1','Pack name',0, 4, 2);
-    INSERT INTO Paquete (Imagen, Nombre, CantidadDeMusica, TiempoDeDuracion, idCategoria) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FPsck.png?alt=media&token=44772291-bcd2-4545-af0d-56fd5801c8d8','Pack name',0,4,3);
-    INSERT INTO Paquete (Imagen, Nombre, CantidadDeMusica, TiempoDeDuracion, idCategoria) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FChillHop.png?alt=media&token=344d4cf1-4a4f-45a8-88c1-9b0939656501','Space Travel',9,0,4);
-    INSERT INTO Paquete (Imagen, Nombre, CantidadDeMusica, TiempoDeDuracion, idCategoria) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FLullaby.png?alt=media&token=41081b2a-4cfe-4472-908d-0ed5f7a1b25f','Lullaby',7,0,1);
+INSERT INTO Paquete (Imagen, Nombre, CantidadDeMusica, TiempoDeDuracion, idCategoria) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FGuitarCamp.png?alt=media&token=b2f13124-2ac7-402a-8fdb-6666347909f0','Guitar Camp',7, 0, 1);
+INSERT INTO Paquete (Imagen, Nombre, CantidadDeMusica, TiempoDeDuracion, idCategoria) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FChillHop.png?alt=media&token=344d4cf1-4a4f-45a8-88c1-9b0939656501','Chill-hop',7, 0, 1);
+INSERT INTO Paquete (Imagen, Nombre, CantidadDeMusica, TiempoDeDuracion, idCategoria) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FPackName.png?alt=media&token=e7eb16f4-cac1-48cd-9091-76dec6df79d1','Pack name',0, 4, 2);
+INSERT INTO Paquete (Imagen, Nombre, CantidadDeMusica, TiempoDeDuracion, idCategoria) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FPsck.png?alt=media&token=44772291-bcd2-4545-af0d-56fd5801c8d8','Pack name',0,4,3);
+INSERT INTO Paquete (Imagen, Nombre, CantidadDeMusica, TiempoDeDuracion, idCategoria) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FChillHop.png?alt=media&token=344d4cf1-4a4f-45a8-88c1-9b0939656501','Space Travel',9,0,4);
+INSERT INTO Paquete (Imagen, Nombre, CantidadDeMusica, TiempoDeDuracion, idCategoria) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FLullaby.png?alt=media&token=41081b2a-4cfe-4472-908d-0ed5f7a1b25f','Lullaby',7,0,1);
 
-    INSERT INTO Detalle (Nombre, CantidadDeMusica,TiempoDeDuracion, IdCategoria, TituloDeDetalle, Detalle) VALUES ('Guitar Camp',7,1,1,'About this pack','An acoustic mix has been specially selected for you. The camping atmosphere will help you improve your sleep and your body as a whole. Your dreams will be delightful and vivid.');
+INSERT INTO Detalle (Nombre, CantidadDeMusica,TiempoDeDuracion, IdCategoria, TituloDeDetalle, Detalle) VALUES ('Guitar Camp',7,1,1,'About this pack','An acoustic mix has been specially selected for you. The camping atmosphere will help you improve your sleep and your body as a whole. Your dreams will be delightful and vivid.');
 
-    INSERT INTO Categoria (nombre) VALUES ('Instrumental');
-    INSERT INTO Categoria (nombre) VALUES ('Acustic');
-    INSERT INTO Categoria (nombre) VALUES ('Folk');
-    INSERT INTO Categoria (nombre) VALUES ('Ambient');
+INSERT INTO Categoria (nombre) VALUES ('Instrumental');
+INSERT INTO Categoria (nombre) VALUES ('Acustic');
+INSERT INTO Categoria (nombre) VALUES ('Folk');
+INSERT INTO Categoria (nombre) VALUES ('Ambient');
 
-    INSERT INTO Musica (Artista, Titulo, Album, idCategoria, idDePaquete, UrlDeMusica) VALUES ('Son By Four','The Guitars','Balada',1, 1, 'https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/MedicMeditation%2Fmusicasmp3%2FApueroDolor.mp3?alt=media&token=0d9e6158-230a-4fba-ae63-2c76b18e909f');
-    INSERT INTO Musica (Artista, Titulo, Album, idCategoria, idDePaquete, UrlDeMusica) VALUES ('Link Park ','Lost Without You','Rock',1,1, 'https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/MedicMeditation%2Fmusicasmp3%2Fkukushka.mp3?alt=media&token=7e35dd0e-9b9e-4728-953c-f5fd4924d3ba');
-    INSERT INTO Musica (Artista, Titulo, Album, idCategoria, idDePaquete, UrlDeMusica) VALUES ('JOSE','City Lights','Salsa',1,1, 'https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/MedicMeditation%2Fmusicasmp3%2FApueroDolor.mp3?alt=media&token=0d9e6158-230a-4fba-ae63-2c76b18e909f');
-    INSERT INTO Musica (Artista, Titulo, Album, idCategoria, idDePaquete, UrlDeMusica) VALUES ('CAMILO ','Romantic','Salsa',1,1,'https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/MedicMeditation%2Fmusicasmp3%2Fkukushka.mp3?alt=media&token=7e35dd0e-9b9e-4728-953c-f5fd4924d3ba');
+INSERT INTO Musica (Artista, Titulo, Album, idCategoria, idDePaquete, UrlDeMusica) VALUES ('Son By Four','The Guitars','Balada',1, 1, 'https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/MedicMeditation%2Fmusicasmp3%2FApueroDolor.mp3?alt=media&token=0d9e6158-230a-4fba-ae63-2c76b18e909f');
+INSERT INTO Musica (Artista, Titulo, Album, idCategoria, idDePaquete, UrlDeMusica) VALUES ('Link Park ','Lost Without You','Rock',1,1, 'https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/MedicMeditation%2Fmusicasmp3%2Fkukushka.mp3?alt=media&token=7e35dd0e-9b9e-4728-953c-f5fd4924d3ba');
+INSERT INTO Musica (Artista, Titulo, Album, idCategoria, idDePaquete, UrlDeMusica) VALUES ('JOSE','City Lights','Salsa',1,1, 'https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/MedicMeditation%2Fmusicasmp3%2FApueroDolor.mp3?alt=media&token=0d9e6158-230a-4fba-ae63-2c76b18e909f');
+INSERT INTO Musica (Artista, Titulo, Album, idCategoria, idDePaquete, UrlDeMusica) VALUES ('CAMILO ','Romantic','Salsa',1,1,'https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/MedicMeditation%2Fmusicasmp3%2Fkukushka.mp3?alt=media&token=7e35dd0e-9b9e-4728-953c-f5fd4924d3ba');
 
 INSERT INTO Destacado (Imagen, Nombre, CantidadDeMusica, IdCategoria) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FChillhop.png?alt=media&token=47264e92-f332-4c61-91a8-a8e0648f2319','Chill-hop',7,1);
 INSERT INTO Destacado (Imagen, Nombre, CantidadDeMusica, IdCategoria) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FLullaby.png?alt=media&token=f6698612-9358-416d-b9e4-2a736b229394','Lullaby',7,1);
+
+INSERT INTO Child (Imagen, Nombre) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FChild.svg?alt=media&token=f0d8a303-51b0-4f6e-a5ba-3e3e061d1e10','Female voice');
+INSERT INTO Child (Imagen, Nombre) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FNoize.svg?alt=media&token=e20d43fa-1d6c-4161-a661-7cfde6ddd987','White noize');
+INSERT INTO Child (Imagen, Nombre) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FLullaby.svg?alt=media&token=441d0b96-aa2b-4e20-91cc-f150a1f488e2','Lullaby');
