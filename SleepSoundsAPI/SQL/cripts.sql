@@ -173,6 +173,7 @@ DROP PROCEDURE USP_OBTENER_DETALLE_DE_PAQUETE_POR_ID;
 DROP PROCEDURE USP_OBTENER_MUSICA_POR_ID;
 DROP PROCEDURE USP_OBTENER_CATEGORIA;
 DROP PROCEDURE USP_OBTENER_LISTA_DE_DESTACADO;
+DROP PROCEDURE USP_OBTENER_LISTA_CHILD;
 
 -- Eliminar Tabla
 DROP TABLE Paquete
@@ -180,6 +181,7 @@ DROP TABLE Detalle
 DROP TABLE Musica
 DROP TABLE Categoria
 DROP TABLE Destacado
+DROP TABLE Child
 
 --Llenado de tablas
 
@@ -205,9 +207,9 @@ INSERT INTO Musica (Artista, Titulo, Album, idCategoria, idDePaquete, UrlDeMusic
 INSERT INTO Destacado (Imagen, Nombre, CantidadDeMusica, IdCategoria) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FChillhop.png?alt=media&token=47264e92-f332-4c61-91a8-a8e0648f2319','Chill-hop',7,1);
 INSERT INTO Destacado (Imagen, Nombre, CantidadDeMusica, IdCategoria) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FLullaby.png?alt=media&token=f6698612-9358-416d-b9e4-2a736b229394','Lullaby',7,1);
 
-INSERT INTO Child (Imagen, Nombre) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FChild.svg?alt=media&token=f0d8a303-51b0-4f6e-a5ba-3e3e061d1e10','Female voice');
-INSERT INTO Child (Imagen, Nombre) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FNoize.svg?alt=media&token=e20d43fa-1d6c-4161-a661-7cfde6ddd987','White noize');
-INSERT INTO Child (Imagen, Nombre) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FLullaby.svg?alt=media&token=441d0b96-aa2b-4e20-91cc-f150a1f488e2','Lullaby');
+INSERT INTO Child (Imagen, Nombre) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FChild.png?alt=media&token=e970ebd4-f23a-4458-9e94-5ee6e731ccfa','Female voice');
+INSERT INTO Child (Imagen, Nombre) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FNoize.png?alt=media&token=7f53d78f-1094-4fec-8b74-a3aff7414f39','White noize');
+INSERT INTO Child (Imagen, Nombre) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FLullaby.png?alt=media&token=69b6c7cc-59ee-43b5-b633-a6cd13251790','Lullaby');
 
 INSERT INTO Nature (Imagen, Nombre) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FLluiva.png?alt=media&token=6b28f281-306e-446c-b514-e01d9d5243c4','Rain');
 INSERT INTO Nature (Imagen, Nombre) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FForest.png?alt=media&token=cb1dcb95-7304-4808-9d92-36aecaa0a2e1','Forest');
