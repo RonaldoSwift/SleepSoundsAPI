@@ -7,6 +7,5 @@ public class DetallePaqueteEntity
     public int CantidadDeMusica { get; set; }
     public int TiempoDeDuracion { get; set; }
     public string? NombreDeCategoria { get; set; }
-    public string? TituloDeDetalle { get; set; }
-    public string? Detalle { get; set; }
+    public string? Descripcion { get; set; }
 }

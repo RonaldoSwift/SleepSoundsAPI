@@ -15,7 +15,7 @@ public class UnitOfWorkDiscover
         this.stringConnection = stringConnection.Value;
     }
 
-    public async Task<PaqueteResponse> obtenerListaDePaquetes()
+    public async Task<PaqueteResponse> obtenerListaDePaquetes(bool destacado)
     {
         List<PaqueteEntity> listaDePaquetes = new List<PaqueteEntity>();
 
@@ -25,7 +25,13 @@ public class UnitOfWorkDiscover
             sqlConnection.ConnectionString = stringConnection.Cadena;
             sqlConnection.Open();
 
-            SqlCommand sqlCommand = new SqlCommand("USP_OBTENER_LISTA_DE_PAQUETES", sqlConnection);
+            string nombreDeStoreProcedurePSP = "";
+            if (destacado == true) {
+                nombreDeStoreProcedurePSP = "USP_OBTENER_LISTA_DE_PAQUETES_QUE_TENGAN_TRUE_EN_DESTACADO";
+            } else {
+                nombreDeStoreProcedurePSP = "USP_OBTENER_LISTA_DE_PAQUETES";
+            }
+            SqlCommand sqlCommand = new SqlCommand(nombreDeStoreProcedurePSP, sqlConnection);
             sqlCommand.CommandType = CommandType.StoredProcedure;
 
             SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
@@ -58,7 +64,7 @@ public class UnitOfWorkDiscover
         return paqueteResponse;
     } 
 
-    public async Task<DetallePaqueteResponse> obtenerDetalleDePaquetePorID(int idDeMusica)
+    public async Task<DetallePaqueteResponse> obtenerDetalleDePaquetePorID(int idDePaquete)
     {
         DetallePaqueteEntity detallePaqueteEntity = null;
 
@@ -70,7 +76,7 @@ public class UnitOfWorkDiscover
 
             SqlCommand sqlCommand = new SqlCommand("USP_OBTENER_DETALLE_DE_PAQUETE_POR_ID", sqlConnection);
             sqlCommand.CommandType = CommandType.StoredProcedure;
-            sqlCommand.Parameters.AddWithValue("@Id", idDeMusica);
+            sqlCommand.Parameters.AddWithValue("@Id", idDePaquete);
 
             SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
 
@@ -83,8 +89,7 @@ public class UnitOfWorkDiscover
                     CantidadDeMusica = Convert.ToInt32(sqlDataReader["CantidadDeMusica"]),
                     TiempoDeDuracion = Convert.ToInt32(sqlDataReader["TiempoDeDuracion"]),
                     NombreDeCategoria = Convert.ToString(sqlDataReader["NombreDeCategoria"]),
-                    TituloDeDetalle = Convert.ToString(sqlDataReader["TituloDeDetalle"]),
-                    Detalle = Convert.ToString(sqlDataReader["Detalle"])
+                    Descripcion = Convert.ToString(sqlDataReader["Descripcion"])
                 };
             }
         }
@@ -140,159 +145,44 @@ public class UnitOfWorkDiscover
 
     }
 
-    public async Task<DestacadoResponse> obtenerDestacado()
+    public async Task<CategoriaComposerResponse> obtenerListaDeCategoriaComposer(string categoriaComposer)
     {
-        List<DestacadoEntity> listaDeDestacados = new List<DestacadoEntity>();
+        List<CategoriaComposerEntity> listaDeCategoriaComposer = new List<CategoriaComposerEntity>();
 
-        try {
+        try{
             SqlConnection sqlConnection = new SqlConnection();
             sqlConnection.ConnectionString = stringConnection.Cadena;
             sqlConnection.Open();
 
-            SqlCommand sqlCommand = new SqlCommand("USP_OBTENER_LISTA_DE_DESTACADO", sqlConnection);
+            SqlCommand sqlCommand = new SqlCommand("USP_OBTENER_LISTA_POR_CATEGORIA", sqlConnection);
             sqlCommand.CommandType = CommandType.StoredProcedure;
+            sqlCommand.Parameters.AddWithValue("@CategoriaComposer", categoriaComposer);
 
             SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
 
             while (sqlDataReader.Read())
             {
-                DestacadoEntity destacadoEntity = new DestacadoEntity
+                CategoriaComposerEntity categoriaComposerEntity = new CategoriaComposerEntity
                 {
                     Id = Convert.ToInt32(sqlDataReader["Id"]),
                     Imagen = Convert.ToString(sqlDataReader["Imagen"]),
                     Nombre = Convert.ToString(sqlDataReader["Nombre"]),
-                    CantidadDeMusica = Convert.ToInt32(sqlDataReader["CantidadDeMusica"]),
-                    NombreDeCategoria = Convert.ToString(sqlDataReader["NombreDeCategoria"])
+                    Categoria = Convert.ToString(sqlDataReader["Categoria"])
                 };
-                listaDeDestacados.Add(destacadoEntity);
+                listaDeCategoriaComposer.Add(categoriaComposerEntity);
             }
             sqlDataReader.Close();
             sqlConnection.Close();
         }
         catch (Exception exception)
         {
-            throw new Exception("Error al obtener Destacado ", exception);
+            throw new Exception("Error al obtener Categoria Composer ", exception);
         }
-
-        DestacadoResponse destacadoResponse = new DestacadoResponse
+        CategoriaComposerResponse categoriaComposerResponse = new CategoriaComposerResponse
         {
-            listaDeDestacadosEntity = listaDeDestacados
+            listaDeCategoriaComposerEntity = listaDeCategoriaComposer
         };
-        return destacadoResponse;
+        return categoriaComposerResponse;
     }
 
-    public async Task<ChildResponse> obtenerListaChilds()
-    {
-        List<ChildEntity> listaDeChilds = new List<ChildEntity>();
-
-        try{
-            SqlConnection sqlConnection = new SqlConnection();
-            sqlConnection.ConnectionString = stringConnection.Cadena;
-            sqlConnection.Open();
-
-            SqlCommand sqlCommand = new SqlCommand("USP_OBTENER_LISTA_CHILD", sqlConnection);
-            sqlCommand.CommandType = CommandType.StoredProcedure;
-
-            SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
-
-            while (sqlDataReader.Read())
-            {
-                ChildEntity childEntity = new ChildEntity
-                {
-                    Id = Convert.ToInt32(sqlDataReader["Id"]),
-                    Imagen = Convert.ToString(sqlDataReader["Imagen"]),
-                    Nombre = Convert.ToString(sqlDataReader["Nombre"])
-                };
-                listaDeChilds.Add(childEntity);
-            }
-            sqlDataReader.Close();
-            sqlConnection.Close();
-        }
-        catch (Exception exception)
-        {
-            throw new Exception("Error al obtener Hijos ", exception);
-        }
-        ChildResponse childResponse = new ChildResponse
-        {
-            listaDeChildEntity = listaDeChilds
-        };
-        return childResponse;
-    }
-
-    public async Task<NatureResponse> obtenerListaNature()
-    {
-        List<NatureEntity> listaDeNatures = new List<NatureEntity>();
-
-        try{
-            SqlConnection sqlConnection = new SqlConnection();
-            sqlConnection.ConnectionString = stringConnection.Cadena;
-            sqlConnection.Open();
-
-            SqlCommand sqlCommand = new SqlCommand("USP_OBTENER_LISTA_NATURE", sqlConnection);
-            sqlCommand.CommandType = CommandType.StoredProcedure;
-
-            SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
-
-            while (sqlDataReader.Read())
-            {
-                NatureEntity natureEntity = new NatureEntity
-                {
-                    Id = Convert.ToInt32(sqlDataReader["Id"]),
-                    Imagen = Convert.ToString(sqlDataReader["Imagen"]),
-                    Nombre = Convert.ToString(sqlDataReader["Nombre"])
-                };
-                listaDeNatures.Add(natureEntity);
-            }
-            sqlDataReader.Close();
-            sqlConnection.Close();
-        }
-        catch (Exception exception)
-        {
-            throw new Exception("Error al obtener Nature ", exception);
-        }
-        NatureResponse natureResponse = new NatureResponse
-        {
-            listaDeNatureEntity = listaDeNatures
-        };
-        return natureResponse;
-    }
-
-    public async Task<AnimalResponse> obtenerListaAnimal()
-    {
-        List<AnimalEntity> listaDeAnimals = new List<AnimalEntity>();
-
-        try{
-            SqlConnection sqlConnection = new SqlConnection();
-            sqlConnection.ConnectionString = stringConnection.Cadena;
-            sqlConnection.Open();
-
-            SqlCommand sqlCommand = new SqlCommand("USP_OBTENER_LISTA_ANIMAL", sqlConnection);
-            sqlCommand.CommandType = CommandType.StoredProcedure;
-
-            SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
-
-            while (sqlDataReader.Read())
-            {
-                AnimalEntity animalEntity = new AnimalEntity
-                {
-                    Id = Convert.ToInt32(sqlDataReader["Id"]),
-                    Imagen = Convert.ToString(sqlDataReader["Imagen"]),
-                    Nombre = Convert.ToString(sqlDataReader["Nombre"])
-                };
-                listaDeAnimals.Add(animalEntity);
-            }
-            sqlDataReader.Close();
-            sqlConnection.Close();
-        }
-        catch (Exception exception)
-        {
-            throw new Exception("Error al obtener Animal ", exception);
-        }
-
-        AnimalResponse animalResponse = new AnimalResponse
-        {
-            listaDeAnimalEntity = listaDeAnimals
-        };
-        return animalResponse;
-    }
 }
