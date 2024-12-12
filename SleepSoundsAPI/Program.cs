@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using SleepSoundsAPI.Data.Modelo;
 using SleepSoundsAPI.Data.UnitOfWork;
 using SleepSoundsAPI.DBConnection;
@@ -11,7 +12,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.Configure<StringConnection>(builder.Configuration.GetSection("ConnectionStrings"));
 builder.Services.AddScoped<UnitOfWorkDiscover>();
 
-string localIP = "192.168.1.58";
+string localIP = "192.168.0.108";
 builder.WebHost.UseUrls($"http://{localIP}:7023",$"http://{localIP}:5023");
 
 var app = builder.Build();
@@ -31,19 +32,19 @@ var summaries = new[]
     
 };
 
-app.MapGet("/obtenerListaDePaquetes", async (UnitOfWorkDiscover unitOfWorkDiscover) =>
+app.MapGet("/obtenerListaDePaquetes", async (UnitOfWorkDiscover unitOfWorkDiscover, [FromQuery] bool destacado) =>
 {
         Thread.Sleep(2000);
-    PaqueteResponse paqueteResponse  = await unitOfWorkDiscover.obtenerListaDePaquetes();
+    PaqueteResponse paqueteResponse  = await unitOfWorkDiscover.obtenerListaDePaquetes(destacado);
     return paqueteResponse;
 })
 .WithName("GetObtenerListaDePaquete")
 .WithOpenApi();
 
-app.MapGet("/obtenerDetalleDePaquetePorID", async (UnitOfWorkDiscover unitOfWorkDiscover, int idDeMusica) =>
+app.MapGet("/obtenerDetalleDePaquetePorID", async (UnitOfWorkDiscover unitOfWorkDiscover, int idDePaquete) =>
 {
     Thread.Sleep(2000);
-    DetallePaqueteResponse detallePaqueteResponse = await unitOfWorkDiscover.obtenerDetalleDePaquetePorID(idDeMusica);
+    DetallePaqueteResponse detallePaqueteResponse = await unitOfWorkDiscover.obtenerDetalleDePaquetePorID(idDePaquete);
 
     if (detallePaqueteResponse == null)
     {
@@ -69,42 +70,14 @@ app.MapGet("/obtenerMusicasPorId", async (UnitOfWorkDiscover unitOfWorkDiscover,
 .WithName("GetObtenerMusicasPorID")
 .WithOpenApi();
 
-app.MapGet("/obtenerListaDeDestacado", async (UnitOfWorkDiscover unitOfWorkDiscover) =>
+app.MapGet("/obtenerListaDeCategoriaComposer", async (UnitOfWorkDiscover unitOfWorkDiscover, string categoria) =>
 {
     Thread.Sleep(2000);
-    DestacadoResponse destacadoResponse  = await unitOfWorkDiscover.obtenerDestacado();
-    return destacadoResponse;
+    CategoriaComposerResponse categoriaComposerResponse  = await unitOfWorkDiscover.obtenerListaDeCategoriaComposer(categoria);
+    return categoriaComposerResponse;
 })
-.WithName("GetObtenerListaDeDestacado")
+.WithName("GetObtenerListaDeCategoriaComposer")
 .WithOpenApi();
-
-app.MapGet("/obtenerListaDeChild", async (UnitOfWorkDiscover unitOfWorkDiscover) =>
-{
-    Thread.Sleep(2000);
-    ChildResponse childResponse  = await unitOfWorkDiscover.obtenerListaChilds();
-    return childResponse;
-})
-.WithName("GetObtenerListaDeChild")
-.WithOpenApi();
-
-app.MapGet("/obtenerListaDeNature", async (UnitOfWorkDiscover unitOfWorkDiscover) =>
-{
-    Thread.Sleep(2000);
-    NatureResponse natureResponse  = await unitOfWorkDiscover.obtenerListaNature();
-    return natureResponse;
-})
-.WithName("GetObtenerListaDeNature")
-.WithOpenApi();
-
-app.MapGet("/obtenerListaDeAnimal", async (UnitOfWorkDiscover unitOfWorkDiscover) =>
-{
-    Thread.Sleep(2000);
-    AnimalResponse animalResponse  = await unitOfWorkDiscover.obtenerListaAnimal();
-    return animalResponse;
-})
-.WithName("GetObtenerListaDeAnimal")
-.WithOpenApi();
-
 app.Run();
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
