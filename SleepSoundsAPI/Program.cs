@@ -26,8 +26,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.Configure<StringConnection>(builder.Configuration.GetSection("ConnectionStrings"));
 
-string localIP = "192.168.1.58";
-builder.WebHost.UseUrls($"http://{localIP}:7023", $"http://{localIP}:5023");
+//string localIP = "192.168.1.58";
+//builder.WebHost.UseUrls($"http://{localIP}:7023", $"http://{localIP}:5023");
 
 var app = builder.Build();
 
@@ -38,6 +38,6 @@ if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.MapControllers();
 app.Run();
