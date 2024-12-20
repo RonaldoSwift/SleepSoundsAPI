@@ -1,8 +1,9 @@
 using System.Data;
 using System.Data.SqlClient;
 using Microsoft.Extensions.Options;
-using SleepSoundsAPI.Data.Modelo;
+using SleepSoundsAPI.Domain.Models;
 using SleepSoundsAPI.DBConnection;
+using SleepSoundsAPI.Domain.Models.Response;
 
 namespace SleepSoundsAPI.Data.UnitOfWork;
 
@@ -154,7 +155,7 @@ public class UnitOfWorkDiscover
             sqlConnection.ConnectionString = stringConnection.Cadena;
             sqlConnection.Open();
 
-            SqlCommand sqlCommand = new SqlCommand("USP_OBTENER_LISTA_POR_CATEGORIA", sqlConnection);
+            SqlCommand sqlCommand = new SqlCommand("USP_OBTENER_LISTA_POR_CATEGORIA_COMPOSER", sqlConnection);
             sqlCommand.CommandType = CommandType.StoredProcedure;
             sqlCommand.Parameters.AddWithValue("@CategoriaComposer", categoriaComposer);
 

@@ -1,86 +1,43 @@
-using Microsoft.AspNetCore.Mvc;
-using SleepSoundsAPI.Data.Modelo;
+using Microsoft.EntityFrameworkCore;
+using SleepSoundsAPI.Data.SleepDbContext;
 using SleepSoundsAPI.Data.UnitOfWork;
 using SleepSoundsAPI.DBConnection;
-
+using SleepSoundsAPI.Domain.Services;
+//Patron de diseño builder (constructor) construlle nuevos objectos 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+//Comfiguramos para leer de los Json (Development, Staging, produccion)
+builder.Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+builder.Configuration.AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true);
+
+// leemos la cadena de coleccion de losarchivos Json
+var cadenaDeConneccion = builder.Configuration.GetConnectionString("Cadena") ?? Environment.GetEnvironmentVariable("URL_BASEDEDATOS_PRODUCTION");
+
+builder.Services.AddDbContext<SleepDbContext>(options =>
+    options.UseSqlServer(cadenaDeConneccion)
+    );
+builder.Services.AddScoped<SleepService>();
+builder.Services.AddScoped<UnitOfWorkDiscover>();
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.Configure<StringConnection>(builder.Configuration.GetSection("ConnectionStrings"));
-builder.Services.AddScoped<UnitOfWorkDiscover>();
 
-string localIP = "192.168.0.108";
-builder.WebHost.UseUrls($"http://{localIP}:7023",$"http://{localIP}:5023");
+string localIP = "192.168.1.58";
+builder.WebHost.UseUrls($"http://{localIP}:7023", $"http://{localIP}:5023");
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
-
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching","HOla","Hola3"
-    
-};
-
-app.MapGet("/obtenerListaDePaquetes", async (UnitOfWorkDiscover unitOfWorkDiscover, [FromQuery] bool destacado) =>
-{
-        Thread.Sleep(2000);
-    PaqueteResponse paqueteResponse  = await unitOfWorkDiscover.obtenerListaDePaquetes(destacado);
-    return paqueteResponse;
-})
-.WithName("GetObtenerListaDePaquete")
-.WithOpenApi();
-
-app.MapGet("/obtenerDetalleDePaquetePorID", async (UnitOfWorkDiscover unitOfWorkDiscover, int idDePaquete) =>
-{
-    Thread.Sleep(2000);
-    DetallePaqueteResponse detallePaqueteResponse = await unitOfWorkDiscover.obtenerDetalleDePaquetePorID(idDePaquete);
-
-    if (detallePaqueteResponse == null)
-    {
-        return Results.NotFound("Detalle De Paquete no encontrada.");
-    }
-
-    return Results.Ok(detallePaqueteResponse);
-})
-.WithName("GetObtenerDetalleDePaquetePorID")
-.WithOpenApi();
-
-app.MapGet("/obtenerMusicasPorId", async (UnitOfWorkDiscover unitOfWorkDiscover, int idDeMusica) =>
-{
-    Thread.Sleep(2000);
-    MusicaResponse musicaResponse = await unitOfWorkDiscover.obtenerMusicas(idDeMusica);
-    if (musicaResponse == null)
-    {
-        return Results.NotFound("Detalle De Musica no encontrada.");
-    }
-
-    return Results.Ok(musicaResponse);
-})
-.WithName("GetObtenerMusicasPorID")
-.WithOpenApi();
-
-app.MapGet("/obtenerListaDeCategoriaComposer", async (UnitOfWorkDiscover unitOfWorkDiscover, string categoria) =>
-{
-    Thread.Sleep(2000);
-    CategoriaComposerResponse categoriaComposerResponse  = await unitOfWorkDiscover.obtenerListaDeCategoriaComposer(categoria);
-    return categoriaComposerResponse;
-})
-.WithName("GetObtenerListaDeCategoriaComposer")
-.WithOpenApi();
+app.MapControllers();
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
