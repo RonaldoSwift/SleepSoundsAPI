@@ -1,7 +1,7 @@
 -- Crear Base De Datos
 
-CREATE DATABASE SleepSounds 
-
+--SleepsoundDevelopment
+CREATE DATABASE SleepSoundsDevelopment
 -- Creacion de Tablas
 
 CREATE TABLE Paquete (
@@ -13,8 +13,8 @@ CREATE TABLE Paquete (
     Destacado BIT NOT NULL,
     IdCategoria INT
 );
-
-CREATE TABLE Detalle (
+-- Camiar detalle de paquete 
+CREATE TABLE DetalleDePaquete (
     IdDetalle INT PRIMARY KEY IDENTITY(1,1),
     Nombre VARCHAR(255) NOT NULL,
     CantidadDeMusica INT,
@@ -22,8 +22,8 @@ CREATE TABLE Detalle (
     IdCategoria INT,
     Descripcion VARCHAR(MAX) NOT NULL
 );
-
-CREATE TABLE Categoria (
+--Cambiar categoria de paquete 
+CREATE TABLE CategoriaDePaquete (
     Id INT PRIMARY KEY IDENTITY(1,1), 
     Nombre VARCHAR(50) NOT NULL
 );
@@ -45,6 +45,15 @@ CREATE TABLE CategoriaComposer (
     Categoria VARCHAR(MAX) NOT NULL,
 )
 
+CREATE TABLE Usuario (
+    Id INT PRIMARY KEY IDENTITY(1,1),
+    Email VARCHAR(100) NOT NULL,
+    Contraseña VARCHAR(100) NOT NULL,
+    IniciarSession BIT NOT NULL,
+    Fecha VARCHAR(50) NOT NULL,
+    PrimiumHabilitado BIT NOT NULL
+)
+
 -- Creacion de Store Procedure
 CREATE PROCEDURE USP_OBTENER_LISTA_DE_PAQUETES
 AS
@@ -55,10 +64,10 @@ BEGIN
     Paquete.Nombre, 
     Paquete.CantidadDeMusica, 
     Paquete.TiempoDeDuracion, 
-    Categoria.Nombre AS NombreCategoria
+    CategoriaDePaquete.Nombre AS NombreCategoria
     FROM Paquete 
-    INNER JOIN Categoria
-    ON Paquete.IdCategoria = Categoria.Id 
+    INNER JOIN CategoriaDePaquete
+    ON Paquete.IdCategoria = CategoriaDePaquete.Id 
     WHERE Paquete.Destacado != 1
 END
 
@@ -72,10 +81,10 @@ BEGIN
         Paquete.CantidadDeMusica, 
         Paquete.TiempoDeDuracion, 
         Paquete.Destacado,
-        Categoria.Nombre AS NombreCategoria
+        CategoriaDePaquete.Nombre AS NombreCategoria
     FROM Paquete 
-    INNER JOIN Categoria
-        ON Paquete.IdCategoria = Categoria.Id
+    INNER JOIN CategoriaDePaquete
+        ON Paquete.IdCategoria = CategoriaDePaquete.Id
     WHERE Paquete.Destacado = 1
 END
 
@@ -85,23 +94,23 @@ CREATE PROCEDURE USP_OBTENER_DETALLE_DE_PAQUETE_POR_ID(
 AS
 BEGIN
     SELECT 
-        Detalle.IdDetalle,
-        Detalle.Nombre, 
-        Detalle.CantidadDeMusica, 
-        Detalle.TiempoDeDuracion, 
-        Categoria.Nombre AS NombreDeCategoria, 
-        Detalle.Descripcion
-    FROM Detalle
-    INNER JOIN Categoria
-        ON Detalle.IdCategoria = Categoria.Id
-    WHERE Detalle.IdDetalle = @Id;
+        DetalleDePaquete.IdDetalle,
+        DetalleDePaquete.Nombre, 
+        DetalleDePaquete.CantidadDeMusica, 
+        DetalleDePaquete.TiempoDeDuracion, 
+        DetalleDePaquete.Nombre AS NombreDeCategoria, 
+        DetalleDePaquete.Descripcion
+    FROM DetalleDePaquete
+    INNER JOIN CategoriaDePaquete
+        ON DetalleDePaquete.IdCategoria = CategoriaDePaquete.Id
+    WHERE DetalleDePaquete.IdDetalle = @Id;
 END;
 
-CREATE PROCEDURE USP_OBTENER_CATEGORIA
+CREATE PROCEDURE USP_OBTENER_CATEGORIA_DE_PAQUETE
 AS
 BEGIN
     SELECT *
-    FROM Categoria
+    FROM CategoriaDePaquete
 END
 
 CREATE PROCEDURE USP_OBTENER_MUSICA_POR_ID(
@@ -121,7 +130,7 @@ BEGIN
     Musica.IdDePaquete = @IdPaquete;
 END
 
-CREATE PROCEDURE USP_OBTENER_LISTA_POR_CATEGORIA(
+CREATE PROCEDURE USP_OBTENER_LISTA_POR_CATEGORIA_COMPOSER(
     @CategoriaComposer VARCHAR(50)
 )
 AS
@@ -136,7 +145,7 @@ EXEC USP_OBTENER_LISTA_DE_PAQUETES;
 EXEC USP_OBTENER_DETALLE_DE_PAQUETE_POR_ID 1;
 EXEC USP_OBTENER_MUSICA_POR_ID 1;
 EXEC USP_OBTENER_LISTA_CATEGORIA_COMPOSER
-EXEC USP_OBTENER_LISTA_POR_CATEGORIA 'Nature';
+EXEC USP_OBTENER_LISTA_POR_CATEGORIA_COMPOSER 'Nature';
 
 -- Eliminar Store Procedure
 DROP PROCEDURE USP_OBTENER_LISTA_DE_PAQUETES;
@@ -161,13 +170,12 @@ INSERT INTO Paquete (Imagen, Nombre, CantidadDeMusica, TiempoDeDuracion, Destaca
 INSERT INTO Paquete (Imagen, Nombre, CantidadDeMusica, TiempoDeDuracion, Destacado, idCategoria) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FChillhop.png?alt=media&token=47264e92-f332-4c61-91a8-a8e0648f2319','Chill-hop',7,0,1,1);
 INSERT INTO Paquete (Imagen, Nombre, CantidadDeMusica, TiempoDeDuracion, Destacado, idCategoria) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FLullaby.png?alt=media&token=f6698612-9358-416d-b9e4-2a736b229394','Lullaby',7, 0, 1,1);
 
-SELECT * FROM Paquete
-INSERT INTO Detalle (Nombre, CantidadDeMusica,TiempoDeDuracion, IdCategoria, Descripcion) VALUES ('Guitar Camp',7,1,1,'An acoustic mix has been specially selected for you. The camping atmosphere will help you improve your sleep and your body as a whole. Your dreams will be delightful and vivid.');
+INSERT INTO DetalleDePaquete (Nombre, CantidadDeMusica,TiempoDeDuracion, IdCategoria, Descripcion) VALUES ('Guitar Camp',7,1,1,'An acoustic mix has been specially selected for you. The camping atmosphere will help you improve your sleep and your body as a whole. Your dreams will be delightful and vivid.');
 
-INSERT INTO Categoria (nombre) VALUES ('Instrumental');
-INSERT INTO Categoria (nombre) VALUES ('Acustic');
-INSERT INTO Categoria (nombre) VALUES ('Folk');
-INSERT INTO Categoria (nombre) VALUES ('Ambient');
+INSERT INTO CategoriaDePaquete (nombre) VALUES ('Instrumental');
+INSERT INTO CategoriaDePaquete (nombre) VALUES ('Acustic');
+INSERT INTO CategoriaDePaquete (nombre) VALUES ('Folk');
+INSERT INTO CategoriaDePaquete (nombre) VALUES ('Ambient');
 
 INSERT INTO Musica (Artista, Titulo, Album, idCategoria, idDePaquete, UrlDeMusica) VALUES ('Son By Four','The Guitars','Balada',1, 1, 'https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/MedicMeditation%2Fmusicasmp3%2FApueroDolor.mp3?alt=media&token=0d9e6158-230a-4fba-ae63-2c76b18e909f');
 INSERT INTO Musica (Artista, Titulo, Album, idCategoria, idDePaquete, UrlDeMusica) VALUES ('Link Park ','Lost Without You','Rock',1,1, 'https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/MedicMeditation%2Fmusicasmp3%2Fkukushka.mp3?alt=media&token=7e35dd0e-9b9e-4728-953c-f5fd4924d3ba');
@@ -186,3 +194,5 @@ INSERT INTO CategoriaComposer (Imagen, Nombre, Categoria) VALUES ('https://fireb
 INSERT INTO CategoriaComposer (Imagen, Nombre, Categoria) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FBird.png?alt=media&token=bf04dce7-e3c6-46e5-85e1-aaf0f399bac9','Birds','Animal');
 INSERT INTO CategoriaComposer (Imagen, Nombre, Categoria) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FCat.png?alt=media&token=60560a48-47f1-435e-a0e1-b8221e3c2017','Cats','Animal');
 INSERT INTO CategoriaComposer (Imagen, Nombre, Categoria) VALUES ('https://firebasestorage.googleapis.com/v0/b/upn-firebase-proyect.appspot.com/o/SleepSounds%2FImagenes%2FFrogs.png?alt=media&token=8ba62bb6-d7ff-45c6-8c78-14a94dc67b49','Frogs','Animal');
+
+INSERT INTO Usuario (Email, Contraseña, IniciarSession,Fecha, PrimiumHabilitado) VALUES ('juan@gmail.com','12345',1,'17/12/2024',1)

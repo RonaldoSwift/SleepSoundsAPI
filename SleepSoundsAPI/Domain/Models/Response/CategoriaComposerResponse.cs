@@ -1,4 +1,4 @@
-namespace SleepSoundsAPI.Data.Modelo;
+namespace SleepSoundsAPI.Domain.Models.Response;
 
 public class CategoriaComposerResponse
 {
